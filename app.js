@@ -464,10 +464,10 @@ app.put('/models', (req, res) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
-        const { ID_modelo, ID_Marca, Modelo, Ano_fabricacion} = req.body
+        const { ID_Modelo, ID_Marca, Modelo, Ano_fabricacion} = req.body
 
         connection.query('UPDATE Modelos SET ID_Marca=? , Modelo=?, Ano_fabricacion=? WHERE ID_Modelo = ?' ,
-                        [ID_Marca, Modelo, Ano_fabricacion, ID_modelo ] , (err, rows) => {
+                        [ID_Marca, Modelo, Ano_fabricacion, ID_Modelo ] , (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
