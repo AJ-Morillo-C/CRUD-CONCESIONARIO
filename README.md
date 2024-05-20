@@ -9,15 +9,15 @@ Este proyecto es una idea de aplicación para concesionario que utiliza Node.js,
   
 ## Instalación
 1. Clona este repositorio en tu máquina local utilizando el siguiente comando:
-    bash
-    git clone <URL_DEL_REPOSITORIO>
+    
+    git clone <[U](https://github.com/AJ-Morillo-C/CRUD-CONCESIONARIO/)>
     
 2. Ve al directorio del proyecto:
-    bash
+    
     cd crud-concesionario
     
 3. Instala las dependencias utilizando npm:
-    bash
+   
     npm install
 
 ## Configuración de la base de datos
@@ -27,6 +27,7 @@ Este proyecto es una idea de aplicación para concesionario que utiliza Node.js,
 
 ## Uso
 - Ejecuta la aplicación utilizando el siguiente comando:
+
     npm start
     
   Esto iniciará el servidor en el puerto especificado (por defecto en el puerto 5000).
