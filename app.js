@@ -48,6 +48,10 @@ app.get('/customers', (req, res) => {
     })
 })
 
+
+//TABLA CLIENTES
+
+
 // Get a customer by ID
 app.get('/customers/:id', (req, res) => {
 
@@ -138,6 +142,10 @@ app.put('/customers', (req, res) => {
     })
 })
 
+
+//TABLA EMPLEADOS
+
+
 // Get all Employees
 app.get('/employees', (req, res) => {
 
@@ -185,7 +193,7 @@ app.delete('/employees/:id', (req, res) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
-        connection.query('DELETE from Empleados WHERE id = ?', [req.params.id], (err, rows) => {
+        connection.query('DELETE from Empleados WHERE ID_empleado = ?', [req.params.id], (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
@@ -211,7 +219,7 @@ app.post('/employees', (req, res) => {
             connection.release() // return the connection to pool
 
             if(!err) {
-                res.send(`employee with the name: ${params.Nombre} has been added.`)
+                res.send(`employee with the name: ${params.Nombre_empleado} has been added.`)
             } else {
                 console.log(err)
             }
@@ -230,14 +238,14 @@ app.put('/employees', (req, res) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
-        const { ID_empleado, Nombre, Apellido, Cedula, Direccion, Telefono, Correo_electronico} = req.body
+        const { ID_empleado, Nombre_empleado, Apellido_empleado, Telefono_empleado, Salario} = req.body
 
-        connection.query('UPDATE Empleados SET Nombre=?, Apellidos=?, Cedula=?, Direccion=?, Telefono=?, Correo_electronico=?, Fecha_nacimiento=? WHERE id = ?',
-                        [Nombre, Apellido, Cedula, Direccion, Telefono, Correo_electronico, ID_empleado ] , (err, rows) => {
+        connection.query('UPDATE Empleados SET Nombre_empleado=?, Apellido_empleado=?, Telefono_empleado=?, Salario=? WHERE ID_empleado = ?',
+                        [Nombre_empleado, Apellido_empleado, Telefono_empleado, Salario, ID_empleado] , (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
-                res.send(`Employee with the name: ${Nombre} has been added.`)
+                res.send(`Employee with the name: ${Nombre_empleado} has been added.`)
             } else {
                 console.log(err)
             }
@@ -248,6 +256,232 @@ app.put('/employees', (req, res) => {
     })
 })
 
+
+//TABLA MARCAS
+
+// Get all Brands
+app.get('/brands', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Marcas', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Get a Brand by ID
+app.get('/brands/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Marcas WHERE ID_marca = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Delete a Brand
+app.delete('/brands/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('DELETE from Marcas WHERE id = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Brand with the Record ID: ${[req.params.id]} has been removed.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Create a Brand
+app.post('/brands', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const params = req.body
+
+        connection.query('INSERT INTO Marcas SET ?', params , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Brand with the name: ${params.Marca} has been added.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+
+
+// Update a Brand
+app.put('/brands', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const { ID_marca, Marca} = req.body
+
+        connection.query('UPDATE Marca SET Marca=? WHERE id = ?',
+                        [Marca, ID_marca ] , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Employee with the name: ${Marca} has been added.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+
+
+//TABLA MODELOS
+
+
+// Get all Models
+app.get('/models', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Modelos', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Get a Model by ID
+app.get('/models/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Modelos WHERE ID_modelo = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Delete a Model
+app.delete('/models/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('DELETE from Modelos WHERE ID_modelo = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Model with the Record ID: ${[req.params.id]} has been removed.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Create a Model
+app.post('/models', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const params = req.body
+
+        connection.query('INSERT INTO Modelos SET ?', params , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Model with the name: ${params.Modelo} has been added.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+
+
+// Update a Model
+app.put('/models', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const { ID_modelo, ID_Marca, Modelo, Ano_fabricacion} = req.body
+
+        connection.query('UPDATE ID_Marca=? , Modelo=?, Ano_fabricacion=?',
+                        [ID_Marca, Modelo, Ano_fabricacion, ID_modelo ] , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Model with the name: ${Modelo} has been added.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
 
 
 // Listen on enviroment port or 5000
