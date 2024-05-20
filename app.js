@@ -28,6 +28,9 @@ pool.getConnection(function(err,conn){
     console.log('DB is connected') //Connnection is automatically released when query resolves
 });
 
+
+{//TABLA CLIENTES
+
 // Get all Customers
 app.get('/customers', (req, res) => {
 
@@ -47,10 +50,6 @@ app.get('/customers', (req, res) => {
         })
     })
 })
-
-
-//TABLA CLIENTES
-
 
 // Get a customer by ID
 app.get('/customers/:id', (req, res) => {
@@ -79,7 +78,7 @@ app.delete('/customers/:id', (req, res) => {
         if(err) throw err
         console.log(`connected as id ${connection.threadId}`)
 
-        connection.query('DELETE from Clientes WHERE id = ?', [req.params.id], (err, rows) => {
+        connection.query('DELETE from Clientes WHERE ID_cliente = ?', [req.params.id], (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
@@ -126,12 +125,12 @@ app.put('/customers', (req, res) => {
 
         const { ID_cliente, Nombre_cliente, Apellido_cliente, Cedula, Direccion, Telefono_cliente} = req.body
 
-        connection.query('UPDATE Clientes SET Nombre_cliente=?, Apellido_cliente=?, Cedula=?, Direccion=?, Telefono_cliente=? WHERE id = ?',
+        connection.query('UPDATE Clientes SET Nombre_cliente=?, Apellido_cliente=?, Cedula=?, Direccion=?, Telefono_cliente=? WHERE ID_cliente = ?',
                         [Nombre_cliente, Apellido_cliente, Cedula, Direccion, Telefono_cliente, ID_cliente ] , (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
-                res.send(`Customer with the name: ${Nombre_cliente} has been added.`)
+                res.send(`Customer with the name: ${Nombre_cliente} has been update.`)
             } else {
                 console.log(err)
             }
@@ -141,9 +140,9 @@ app.put('/customers', (req, res) => {
         console.log(req.body)
     })
 })
+}
 
-
-//TABLA EMPLEADOS
+{//TABLA EMPLEADOS
 
 
 // Get all Employees
@@ -245,7 +244,7 @@ app.put('/employees', (req, res) => {
             connection.release() // return the connection to pool
 
             if(!err) {
-                res.send(`Employee with the name: ${Nombre_empleado} has been added.`)
+                res.send(`Employee with the name: ${Nombre_empleado} has been update.`)
             } else {
                 console.log(err)
             }
@@ -255,9 +254,9 @@ app.put('/employees', (req, res) => {
         console.log(req.body)
     })
 })
+}
 
-
-//TABLA MARCAS
+{//TABLA MARCAS
 
 // Get all Brands
 app.get('/brands', (req, res) => {
@@ -368,9 +367,9 @@ app.put('/brands', (req, res) => {
         console.log(req.body)
     })
 })
+}
 
-
-//TABLA MODELOS
+{//TABLA MODELOS
 
 
 // Get all Models
@@ -467,12 +466,99 @@ app.put('/models', (req, res) => {
 
         const { ID_modelo, ID_Marca, Modelo, Ano_fabricacion} = req.body
 
-        connection.query('UPDATE ID_Marca=? , Modelo=?, Ano_fabricacion=?',
+        connection.query('UPDATE Modelos SET ID_Marca=? , Modelo=?, Ano_fabricacion=? WHERE ID_Modelo = ?' ,
                         [ID_Marca, Modelo, Ano_fabricacion, ID_modelo ] , (err, rows) => {
             connection.release() // return the connection to pool
 
             if(!err) {
-                res.send(`Model with the name: ${Modelo} has been added.`)
+                res.send(`Model with the name: ${Modelo} has been update.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+}
+
+{//TABLA VEHICULOS
+
+// Get all Cars
+app.get('/cars', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Vehiculos', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Get a Car by ID
+app.get('/cars/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Vehiculos WHERE ID_vehiculo = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Delete a Car
+app.delete('/cars/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('DELETE from Vehiculos WHERE ID_vehiculo = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Cars with the Record ID: ${[req.params.id]} has been removed.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Create a Car
+app.post('/cars', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const params = req.body
+
+        connection.query('INSERT INTO Vehiculos SET ?', params , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Cars with the identification: ${params.Matricula} has been added.`)
             } else {
                 console.log(err)
             }
@@ -483,6 +569,145 @@ app.put('/models', (req, res) => {
     })
 })
 
+
+// Update a Cars
+app.put('/cars', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const {ID_vehiculo, Matricula, ID_modelo, Color, Kilometraje, Estado, Precio_venta} = req.body
+
+        connection.query('UPDATE Clientes SET Matricula=?, ID_modelo=?, Color=?, Kilometraje=?, Estado=?, Precio_venta=? WHERE ID_vehiculo = ?',
+                        [Matricula, ID_modelo, Color, Kilometraje, Estado, Precio_venta, ID_vehiculo ] , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Cars with the identification: ${Matricula} has been update.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+}
+
+{//TABLA VENTAS
+
+// Get all Sales
+app.get('/sales', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Ventas', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Get a Sale by ID
+app.get('/sales/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('SELECT * from Ventas WHERE ID_venta = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(rows)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Delete a Sale
+app.delete('/sales/:id', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        connection.query('DELETE from Ventas WHERE ID_venta = ?', [req.params.id], (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Sale with the Record ID: ${[req.params.id]} has been removed.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+    })
+})
+
+// Create a Sale
+app.post('/sales', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const params = req.body
+
+        connection.query('INSERT INTO Ventas SET ?', params , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Sale with the ID: ${params.ID_venta} has been added.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+
+
+// Update a Sales
+app.put('/sales', (req, res) => {
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        const {ID_venta, ID_cliente, ID_vehiculo, ID_empleado, Fecha_venta, Forma_pago} = req.body
+
+        connection.query('UPDATE Ventas SET ID_cliente=?, ID_vehiculo=?, ID_empleado=?, Fecha_venta=?, Forma_pago=? WHERE  ID_venta = ?',
+                        [ID_cliente, ID_vehiculo, ID_empleado, Fecha_venta, Forma_pago, ID_venta] , (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if(!err) {
+                res.send(`Sale with the ID: ${ID_venta} has been update.`)
+            } else {
+                console.log(err)
+            }
+
+        })
+
+        console.log(req.body)
+    })
+})
+}
 
 // Listen on enviroment port or 5000
 app.listen(port, () => console.log(`Listening on port ${port}`))
