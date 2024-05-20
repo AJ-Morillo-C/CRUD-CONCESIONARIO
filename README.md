@@ -1,3 +1,4 @@
+
 # CRUD-CONCESIONARIO => Using Node.js with MySQL | XAMPP / PhpMyAdmin
 Este proyecto es una idea de aplicación para concesionario que utiliza Node.js, Express y MySQL para proporcionar servicios de gestión de datos.
 
@@ -35,4 +36,4 @@ Este proyecto es una idea de aplicación para concesionario que utiliza Node.js,
 - Se puede verificar el funcionamiento de la API desde POSTMAN.
 
 ## NOTA
-El despligue no lo logre hacer debido a que no pude elaborar una interfaz de usuario.
+El despligue no lo logre hacer debido a que se me dificultaba.
